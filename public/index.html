@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Madrid Río B · Seguimiento de Temporada</title>
+<style>
+:root {
+    --primary: #0284c7;
+    --primary-light: #38bdf8;
+    --primary-dark: #0369a1;
+    --bg: #f0f6fa;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #cbd5e1;
+    --green: #10b981;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --shadow: 0 4px 12px -2px rgba(2, 132, 199, 0.08);
+    --radius: 12px;
+}
+
+*, *:before, *:after { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* HEADER & LOGO COMPONENT */
+header {
+    background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #0284c7 100%);
+    color: #fff;
+    padding: 16px 10px;
+    width: 100%;
+}
+
+header .wrap {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+}
+
+.team-logo-box {
+    width: 50px;
+    height: 50px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.team-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 2px;
+}
+
+.team-logo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 7px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.team-logo-placeholder svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--primary);
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(16px, 3.8vw, 22px);
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+header p {
+    margin: 2px 0 0;
+    opacity: 0.92;
+    font-size: 11px;
+}
+
+.pill {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+/* MAIN LAYOUT - ANCHO FLUIDO TOTAL */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px 8px 30px;
+    width: 100%;
+}
+
+.notice {
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+    padding: 10px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    font-size: 12px;
+    width: 100%;
+}
+
+.tabs {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.tab {
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 11px;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    color: var(--primary);
+    border-color: var(--primary-light);
+}
+
+.tab.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+}
+
+.panel { display: none; width: 100%; }
+.panel.active { display: block; width: 100%; }
+
+/* CARDS RESPONSIVE GRID - 100% ANCHO REAL */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.card, .box {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 700;
+}
+
+.metric {
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 2px;
+    color: var(--primary-dark);
+    word-break: break-all;
+}
+
+.sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* DASHBOARD LAYOUT FLUIDO Y ADAPTATIVO */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+}
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+}
+
+.box h2 {
+    font-size: 14px;
+    margin: 0 0 8px;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    word-break: break-word;
+}
+
+.mini-table {
+    width: 100%;
+    font-size: 11px;
+}
+.mini-table th, .mini-table td {
+    padding: 4px;
+}
+
+/* TOP GOLEADORES CARD */
+.top-scorers-box {
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.scorer-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 11px;
+    gap: 4px;
+}
+.scorer-item:last-child { border-bottom: none; }
+.scorer-badge {
+    background: var(--primary);
+    color: #fff;
+    font-weight: 800;
+    padding: 2px 5px;
+    border-radius: 99px;
+    font-size: 9px;
+    flex-shrink: 0;
+}
+
+/* PIZARRA TÁCTICA FÚTBOL 7 */
+.tactical-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+}
+
+.players-list-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 2px;
+    width: 100%;
+}
+
+.player-card {
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: grab;
+    width: 100%;
+}
+.player-card:active { cursor: grabbing; }
+
+.player-number {
+    background: var(--primary);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.player-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.player-name-input {
+    font-weight: 700;
+    font-size: 10px;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    padding: 0;
+    width: 100%;
+}
+.player-name-input:focus { outline: 1px solid var(--primary); background: #fff; }
+.player-pos {
+    font-size: 8px;
+    color: var(--muted);
+}
+
+.pizarra-toolbar {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    width: 100%;
+}
+
+.tool-btn {
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 10px;
+    cursor: pointer;
+    color: var(--ink);
+}
+.tool-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.football-field {
+    width: 100%;
+    height: 380px;
+    background: linear-gradient(180deg, #15803d 0%, #16a34a 100%);
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.field-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+.field-canvas.drawing-active {
+    pointer-events: auto;
+    cursor: crosshair;
+}
+
+.field-line-center { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.6); pointer-events: none; }
+.field-circle-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; pointer-events: none; }
+.field-goal-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 25px; border: 2px solid rgba(255,255,255,0.6); border-top: none; pointer-events: none; }
+.field-goal-bottom { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 25px; border: 2px solid rgba(255,255,255,0.6); border-bottom: none; pointer-events: none; }
+
+.field-token {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border: 2px solid var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 10px;
+    color: var(--primary-dark);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    cursor: grab;
+    user-select: none;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+.field-token:active { cursor: grabbing; }
+
+.bench-drop-zone {
+    margin-top: 5px;
+    background: #fef2f2;
+    border: 2px dashed #fca5a5;
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+    font-size: 11px;
+    color: #991b1b;
+    font-weight: 700;
+}
+
+.scorers-selector-box {
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    padding: 6px;
+    border-radius: 6px;
+    margin-top: 6px;
+    width: 100%;
+}
+.scorer-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+    align-items: center;
+    width: 100%;
+}
+
+/* FORMULARIOS Y TABLAS */
+.formgrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 100%;
+    min-width: 0;
+}
+
+.field label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+input, select, textarea {
+    font: inherit;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px;
+    background: #fff;
+    color: var(--ink);
+    width: 100%;
+    max-width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+textarea { min-height: 50px; resize: vertical; }
+
+.actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.btn {
+    border: 0;
+    border-radius: 6px;
+    background: var(--primary);
+    color: #fff;
+    padding: 7px 10px;
+    font-weight: 750;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn:hover { background: var(--primary-dark); }
+.btn.secondary { background: #e2e8f0; color: var(--ink); }
+.btn.secondary:hover { background: #cbd5e1; }
+.btn.green { background: var(--green); }
+.btn.danger { background: #fee2e2; color: #991b1b; }
+
+.tablewrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    width: 100%;
+    max-width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 480px;
+    background: #fff;
+}
+
+th, td {
+    padding: 6px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+    font-size: 11px;
+}
+
+th {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted);
+    background: #f8fafc;
+}
+
+.badge {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 2px 5px;
+    font-size: 9px;
+    font-weight: 750;
+}
+
+.badge.win { background: #dcfce7; color: #15803d; }
+.badge.draw { background: #fef3c7; color: #b45309; }
+.badge.loss { background: #fee2e2; color: #b91c1c; }
+.badge.pending { background: #f1f5f9; color: #64748b; }
+
+.chart { width: 100%; height: 160px; display: block; max-width: 100%; }
+.legend { display: flex; gap: 6px; color: var(--muted); font-size: 9px; margin-top: 3px; flex-wrap: wrap; }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 3px; }
+
+.teamgrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+}
+
+.team {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px;
+    background: #fff;
+    width: 100%;
+    min-width: 0;
+}
+
+footer {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 8px 15px;
+    color: var(--muted);
+    font-size: 9px;
+    text-align: center;
+    width: 100%;
+}
+
+/* ===== PIZARRA: SOPORTE TÁCTIL (móvil / tablet) ===== */
+.player-card {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+.player-card.on-field { opacity: .55; }
+.player-card.drag-source { opacity: .3; }
+.player-name-input { -webkit-user-select: text; user-select: text; }
+
+.field-token {
+    pointer-events: auto;
+    touch-action: none;                 /* el dedo mueve la ficha, no hace scroll */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.field-token.dragging {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 6px 14px rgba(0,0,0,.4);
+    z-index: 20;
+    cursor: grabbing;
+}
+.tokens-locked .field-token { pointer-events: none; }   /* en modo dibujo las fichas no estorban */
+
+.field-canvas.drawing-active { touch-action: none; }
+.football-field.drop-hover { outline: 3px dashed #fff; outline-offset: -6px; }
+
+.bench-drop-zone { transition: background .15s, transform .15s; }
+.bench-drop-zone.over { background: #fecaca; border-color: #dc2626; transform: scale(1.02); }
+
+.drag-ghost {
+    position: fixed;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--primary-dark);
+    color: var(--primary-dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 18px rgba(0,0,0,.35);
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+@media (pointer: coarse) {
+    .field-token { width: 42px; height: 42px; font-size: 12px; }
+    .player-card { padding: 8px 6px; }
+    .player-number { width: 26px; height: 26px; font-size: 11px; }
+    .player-name-input { font-size: 16px; }   /* evita el zoom automático de iOS al editar */
+    .bench-drop-zone { padding: 16px; font-size: 12px; }
+    .tool-btn { padding: 8px 12px; font-size: 12px; }
+}
+
+@media (max-width: 850px) {
+    .players-list-panel { max-height: 200px; }   /* que el campo quede a la vista sin tanto scroll */
+}
+
+
+/* ===== GRUPO / CLASIFICACIÓN COMPLETA ===== */
+/* tablas de clasificación: caben enteras en un móvil (sin scroll horizontal) */
+.lg-table, .mini-table { min-width: 0; }
+.lg-table th, .lg-table td { padding: 6px 3px; text-align: center; font-size: 11px; }
+.lg-table th:nth-child(2), .lg-table td:nth-child(2) { text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.lg-table th:first-child, .lg-table td:first-child { padding-left: 6px; }
+.mini-table th:nth-child(n+3), .mini-table td:nth-child(n+3) { text-align: center; }
+[hidden] { display: none !important; }
+.lg-vs { font-size: 11px; color: var(--muted); font-weight: 700; }
+.lg-sel { font-size: 13px; padding: 8px 4px; }
+@media (pointer: coarse) { .lg-sel { font-size: 16px; } }
+.lg-edit-tools { margin-bottom: 6px; }
+.lg-nav { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
+.lg-nav select { flex: 1; min-width: 0; font-size: 16px; }
+.lg-nav .tool-btn { min-width: 44px; min-height: 40px; }
+.lg-nav .tool-btn:disabled { opacity: .4; }
+.lg-hint { font-size: 11px; color: var(--muted); margin: 6px 0 8px; }
+.lg-match {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--line);
+    transition: background .4s;
+}
+.lg-match.lg-own { background: #e0f2fe; border-radius: 6px; }
+.lg-match.lg-saved { background: #dcfce7; }
+.lg-team { font-size: 12px; font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
+.lg-home { text-align: right; }
+.lg-away { text-align: left; }
+.lg-score { display: flex; align-items: center; gap: 4px; }
+.lg-in { width: 48px; text-align: center; padding: 8px 2px; font-size: 16px; font-weight: 700; }
+.lg-in:disabled { background: #f1f5f9; color: var(--ink); opacity: 1; }
+.lg-edit { grid-column: 1 / -1; justify-self: center; }
+.lg-rest { padding: 8px 4px; font-size: 12px; color: var(--muted); }
+
+/* ===== PLANTILLA: dorsal, nombre y posición editables ===== */
+.player-grip {
+    flex-shrink: 0;
+    align-self: stretch;
+    width: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: -2px;
+    cursor: grab;
+    touch-action: none;                 /* desde el asa, el dedo arrastra y no hace scroll */
+    -webkit-user-select: none;
+    user-select: none;
+}
+.player-number-input {
+    flex-shrink: 0;
+    width: 32px;
+    height: 26px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 800;
+    font-size: 12px;
+    text-align: center;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.player-number-input::-webkit-outer-spin-button,
+.player-number-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.player-number-input:focus { box-shadow: 0 0 0 3px rgba(2, 132, 199, .3); }
+.player-pos-select {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: 10px;
+    color: var(--muted);
+}
+@media (pointer: coarse) {
+    .player-grip { width: 24px; font-size: 18px; }
+    .player-number-input { width: 40px; height: 34px; font-size: 16px; }
+    .player-pos-select { font-size: 16px; padding: 2px 0; }
+}
+@media (max-width: 850px) {
+    .players-list-panel { max-height: 280px; }
+}
+
+/* ===== SINCRONIZACIÓN ===== */
+.sync-pill { font: inherit; font-size: 10px; font-weight: 600; cursor: pointer; }
+.sync-pill.ok { background: rgba(220, 252, 231, .95); color: #166534; border-color: #86efac; }
+.sync-pill.warn { background: rgba(254, 243, 199, .95); color: #92400e; border-color: #fcd34d; }
+
+/* BREAKPOINTS MÓVILES FORZADOS A 100% DE ANCHO */
+@media(max-width: 850px) {
+    .dashboard-grid, .tactical-grid { grid-template-columns: 1fr; width: 100%; }
+}
+
+@media(max-width: 600px) {
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+    .grid2 { grid-template-columns: 1fr; width: 100%; }
+    .formgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+    .teamgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+}
+
+@media(max-width: 400px) {
+    .cards { grid-template-columns: 1fr; width: 100%; }
+    .formgrid, .teamgrid { grid-template-columns: 1fr; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="wrap">
+        <div class="brand-container">
+            <!-- COMPONENTE LOGO -->
+            <div class="team-logo-box" onclick="document.getElementById('logoInput').click();" title="Haz clic para subir/cambiar el logo del equipo">
+                <img id="teamLogoImg" class="team-logo-img" src="" alt="Logo" style="display:none;">
+                <div id="teamLogoPlaceholder" class="team-logo-placeholder">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-3zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 14.3c-2.5-.9-4.5-3.3-4.9-6.1 1.5-.8 3.2-1.2 4.9-1.2 1.7 0 3.4.4 4.9 1.2-.4 2.8-2.4 5.2-4.9 6.1z"/></svg>
+                    <span>LOGO</span>
+                </div>
+            </div>
+            <input type="file" id="logoInput" accept="image/*" style="display:none;">
+
+            <div style="min-width:0;">
+                <h1>Madrid Río-Arganzuela B</h1>
+                <p>Primera Alevín F-7 · Grupo 11</p>
+            </div>
+        </div>
+        <button type="button" class="pill sync-pill" id="syncPill">☁ Sin sincronizar</button>
+    </div>
+</header>
+
+<main>
+    <div class="notice">
+        <strong>Plantilla Oficial:</strong> Grid principal adaptado al 100% del ancho del dispositivo móvil.
+    </div>
+
+    <nav class="tabs" aria-label="Secciones">
+        <button class="tab active" data-tab="dashboard">Resumen</button>
+        <button class="tab" data-tab="calendar">Calendario</button>
+        <button class="tab" data-tab="league">Clasificación</button>
+        <button class="tab" data-tab="squad">Plantilla</button>
+        <button class="tab" data-tab="match">Registrar</button>
+        <button class="tab" data-tab="analysis">Análisis</button>
+        <button class="tab" data-tab="teams">Rivales</button>
+        <button class="tab" data-tab="backup">Datos</button>
+    </nav>
+
+    <!-- PANEL RESUMEN -->
+    <section id="dashboard" class="panel active">
+        <div class="cards">
+            <div class="card">
+                <div class="metric-label">Puntos</div>
+                <div class="metric" id="mPoints">0</div>
+                <div class="sub" id="mRecord">0V · 0E · 0D</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Jugados</div>
+                <div class="metric" id="mPlayed">0/26</div>
+                <div class="sub">Temporada</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Goles (F/C)</div>
+                <div class="metric" id="mGoals">0 / 0</div>
+                <div class="sub" id="mDiff">Dif: 0</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Objetivo</div>
+                <div class="metric" id="mTargetDisplay">24</div>
+                <div class="sub" id="mTargetSub">Faltan 24</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div style="width:100%; min-width:0;">
+                <div class="grid2">
+                    <div class="box">
+                        <h2>Goles Jornada</h2>
+                        <canvas id="goalsChart" class="chart"></canvas>
+                        <div class="legend">
+                            <span><i class="dot" style="background:#0284c7"></i>Fav</span>
+                            <span><i class="dot" style="background:#ef4444"></i>Con</span>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h2>Balance</h2>
+                        <canvas id="pointsChart" class="chart"></canvas>
+                        <div class="field" style="margin-top: 6px;">
+                            <label for="targetPoints">Objetivo Puntos</label>
+                            <input id="targetPoints" type="number" min="0" max="78" value="24">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box" style="margin-top:10px">
+                    <h2>Últimos Partidos</h2>
+                    <div id="recentMatches" class="empty" style="font-size:11px; color:var(--muted);">Sin resultados.</div>
+                </div>
+            </div>
+
+            <!-- COLUMNA LATERAL DERECHA -->
+            <div style="display: flex; flex-direction: column; gap: 10px; width:100%; min-width:0;">
+                <div class="box">
+                    <h2>Top Goleadores</h2>
+                    <div class="top-scorers-box" id="topScorersContainer"></div>
+                    <button class="tool-btn" style="width: 100%; margin-top: 2px; text-align: center;" onclick="openAllScorersModal()">Ver completa</button>
+                </div>
+
+                <div class="box">
+                    <h2>Clasificación (G.11)</h2>
+                    <div class="tablewrap" style="margin-top: 4px;">
+                        <table class="mini-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Equipo</th>
+                                    <th>PJ</th>
+                                    <th>PT</th>
+                                    <th>DG</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standingsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE GOLEADORES COMPLETO -->
+    <div id="scorersModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:100; align-items:center; justify-content:center; padding: 8px;">
+        <div class="box" style="width: 100%; max-width: 400px; background:#fff; max-height:80vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h2 style="margin:0; font-size:14px;">Goleadores del Equipo</h2>
+                <button class="tool-btn" onclick="closeAllScorersModal()">✕</button>
+            </div>
+            <div class="tablewrap">
+                <table>
+                    <thead>
+                        <tr><th>Jugador</th><th>Posición</th><th>Goles</th></tr>
+                    </thead>
+                    <tbody id="fullScorersBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL CALENDARIO -->
+    <section id="calendar" class="panel">
+        <div class="sectionhead" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:4px;">
+            <h2 style="margin:0; font-size:15px;">Calendario (26 Jornadas)</h2>
+            <div class="filters" style="display:flex; gap:3px;">
+                <select id="roundFilter"><option value="">Todas</option></select>
+                <select id="statusFilter">
+                    <option value="">Todos</option>
+                    <option value="played">Jugados</option>
+                    <option value="pending">Pendientes</option>
+                </select>
+            </div>
+        </div>
+        <div class="box">
+            <div class="tablewrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Jor</th>
+                            <th>Fecha</th>
+                            <th>Cond</th>
+                            <th>Rival</th>
+                            <th>Res</th>
+                            <th>Est</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendarBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL GRUPO / CLASIFICACIÓN COMPLETA -->
+    <section id="league" class="panel">
+        <div class="box">
+            <h2>Clasificación del Grupo 11</h2>
+            <div class="tablewrap">
+                <table class="lg-table">
+                    <thead>
+                        <tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th><th>PT</th></tr>
+                    </thead>
+                    <tbody id="leagueTableBody"></tbody>
+                </table>
+            </div>
+            <p class="lg-hint">Orden: puntos, diferencia de goles y goles a favor. En caso de empate la federación puede aplicar otros criterios (por ejemplo, el enfrentamiento directo).</p>
+        </div>
+
+        <div class="box" style="margin-top:10px">
+            <h2 style="justify-content:space-between;">Resultados por jornada
+                <button type="button" class="tool-btn" id="leagueEditBtn">Editar cruces</button>
+            </h2>
+            <div class="lg-nav">
+                <button type="button" class="tool-btn" id="leaguePrev" aria-label="Jornada anterior">◀</button>
+                <select id="leagueRoundSel" aria-label="Jornada"></select>
+                <button type="button" class="tool-btn" id="leagueNext" aria-label="Jornada siguiente">▶</button>
+            </div>
+            <div id="leagueEditTools" class="lg-edit-tools" hidden>
+                <p class="lg-hint">Elige el equipo de cada hueco: el que lo ocupaba pasa al hueco que dejas libre, así cada equipo sale siempre una vez por jornada. Al cambiar un cruce se vacía su marcador (si vuelves al cruce anterior, reaparece). Si tocas un cruce de tu equipo, el calendario se actualiza solo.</p>
+                <button type="button" class="btn secondary" id="leagueRestoreRound" hidden>Restaurar cruces de esta jornada</button>
+            </div>
+            <p class="lg-hint" id="leagueResHint">Escribe los dos marcadores de cada partido y se guarda solo. Para borrar un resultado, vacía los dos campos. Tus partidos (en azul) se editan en «Registrar».</p>
+            <div id="leagueRoundMatches"></div>
+            <div class="actions">
+                <button type="button" class="btn danger" id="leagueReset">Volver a los datos iniciales del grupo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL PLANTILLA Y PIZARRA TÁCTICA -->
+    <section id="squad" class="panel">
+        <div class="box">
+            <h2>Plantilla y Pizarra Táctica (F7)</h2>
+            <p style="font-size:11px; color:var(--muted); margin-bottom:8px;">Edita el dorsal, el nombre y la posición de cada jugador. Para colocarlo: toca su ficha (el asa ⋮⋮ o el hueco libre) o arrástralo desde el asa; también vale mantener pulsado un instante. Para quitar una ficha, arrástrala a la zona roja bajo el campo.</p>
+            
+            <div class="tactical-grid">
+                <div class="box" style="padding: 6px; background: #f8fafc;">
+                    <h3 style="font-size:12px; margin:0 0 4px; color:var(--primary-dark);">Plantilla (16)</h3>
+                    <div class="players-list-panel" id="playersList"></div>
+                </div>
+
+                <div>
+                    <div class="pizarra-toolbar">
+                        <span style="font-size:10px; font-weight:700; color:var(--muted);">Herramienta:</span>
+                        <button class="tool-btn active" id="toolMove" onclick="setTool('move')">Mover</button>
+                        <button class="tool-btn" id="toolDraw" onclick="setTool('draw')">Dibujar</button>
+                        <button class="tool-btn" onclick="clearCanvas()" style="margin-left:auto; background:#fee2e2; color:#991b1b; border-color:#fca5a5;">Limpiar</button>
+                        <input type="color" id="drawColor" value="#ffffff" title="Color" style="width:24px; height:22px; padding:0; border:none; background:transparent; cursor:pointer;">
+                    </div>
+
+                    <div class="football-field" id="tacticalField">
+                        <canvas id="boardCanvas" class="field-canvas"></canvas>
+                        <div class="field-line-center"></div>
+                        <div class="field-circle-center"></div>
+                        <div class="field-goal-top"></div>
+                        <div class="field-goal-bottom"></div>
+                        
+                        <div id="tokensContainer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:8; pointer-events:none;"></div>
+                    </div>
+                    <div class="bench-drop-zone" id="benchZone">🗑 Suelta aquí la ficha para quitarla del campo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL REGISTRAR PARTIDO -->
+    <section id="match" class="panel">
+        <div class="box">
+            <h2>Registrar Partido</h2>
+            <div class="formgrid">
+                <div class="field"><label>Jornada</label><select id="fRound"></select></div>
+                <div class="field"><label>Fecha</label><input id="fDate" type="date"></div>
+                <div class="field"><label>Rival</label><input id="fOpponent" placeholder="Rival"></div>
+                <div class="field"><label>Condición</label><select id="fVenue"><option value="Local">Local</option><option value="Visitante">Visitante</option><option value="Descanso">Descanso</option></select></div>
+                <div class="field"><label>Goles Madrid</label><input id="fGF" type="number" min="0" max="99" placeholder="—"></div>
+                <div class="field"><label>Goles Rival</label><input id="fGA" type="number" min="0" max="99" placeholder="—"></div>
+                <div class="field"><label>Pérdidas</label><input id="fLossGoals" type="number" min="0" max="99" placeholder="0"></div>
+                <div class="field"><label>Ocasiones</label><input id="fChances" type="number" min="0" max="99" placeholder="0"></div>
+                <div class="field"><label>Duelos (1-5)</label><select id="fPhysical"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+                <div class="field"><label>Defensa (1-5)</label><select id="fDefense"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+                <div class="field"><label>Salida (1-5)</label><select id="fBuild"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+                <div class="field"><label>Esfuerzo (1-5)</label><select id="fEffort"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+            </div>
+
+            <div class="scorers-selector-box">
+                <label style="font-size:10px; font-weight:700; color:var(--primary-dark); display:block; margin-bottom:3px;">Goleadores en este partido:</label>
+                <div id="matchScorersList"></div>
+                <button type="button" class="tool-btn" style="margin-top:3px;" onclick="addScorerRow()">+ Añadir Goleador</button>
+            </div>
+
+            <div class="field" style="margin-top:8px">
+                <label>Observaciones</label>
+                <textarea id="fNotes" placeholder="Notas..."></textarea>
+            </div>
+            <div class="actions">
+                <button class="btn" id="saveMatch">Guardar</button>
+                <button class="btn secondary" id="clearForm">Limpiar</button>
+            </div>
+            <p id="saveMsg" style="font-size:10px; color:var(--green); margin-top:4px;"></p>
+        </div>
+    </section>
+
+    <!-- PANEL ANÁLISIS -->
+    <section id="analysis" class="panel">
+        <div class="grid2">
+            <div class="box">
+                <h2>Indicadores</h2>
+                <div class="tablewrap">
+                    <table><tbody id="analysisTable"></tbody></table>
+                </div>
+            </div>
+            <div class="box">
+                <h2>Objetivos</h2>
+                <div class="field">
+                    <label>Próximas 4 Jornadas</label>
+                    <textarea id="improvement" placeholder="Enfoque..."></textarea>
+                </div>
+                <button class="btn" id="saveGoals" style="margin-top:6px;">Guardar</button>
+                <p id="goalMsg" style="font-size:10px; color:var(--green); margin-top:3px;"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL EQUIPOS -->
+    <section id="teams" class="panel">
+        <div class="box">
+            <h2>Rivales del Grupo 11</h2>
+            <div class="teamgrid" id="teamGrid"></div>
+        </div>
+    </section>
+
+    <!-- PANEL COPIAS DE SEGURIDAD -->
+    <section id="backup" class="panel">
+        <div class="box" id="syncPanel" style="margin-bottom:10px;">
+            <h2>Sincronización del equipo</h2>
+            <p id="syncState" style="font-size:12px; margin:0 0 8px;"></p>
+
+            <div id="syncSetup">
+                <p style="font-size:11px; color:var(--muted); margin:0 0 6px;">
+                    Con un código de equipo, todos los dispositivos ven los mismos datos. Si eres el primero, pulsa «Crear código nuevo»; si ya lo creó el otro entrenador, escríbelo y pulsa «Conectar».
+                </p>
+                <div class="field">
+                    <label for="syncCode">Código del equipo (mínimo 8 caracteres)</label>
+                    <input id="syncCode" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" style="font-size:16px;">
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn" id="syncConnect">Conectar</button>
+                    <button type="button" class="btn secondary" id="syncCreate">Crear código nuevo</button>
+                </div>
+            </div>
+
+            <div id="syncChoice" hidden>
+                <div class="actions">
+                    <button type="button" class="btn green" id="syncUseTeam">Usar los datos del equipo</button>
+                    <button type="button" class="btn danger" id="syncUseMine">Subir los de este dispositivo</button>
+                    <button type="button" class="btn secondary" id="syncBackup">Descargar copia de este dispositivo</button>
+                </div>
+                <p style="font-size:10px; color:var(--muted); margin:6px 0 0;">«Usar los datos del equipo» sustituye lo de este dispositivo. «Subir los de este dispositivo» sustituye lo que ya tiene el equipo.</p>
+            </div>
+
+            <div id="syncConnected" hidden>
+                <div class="actions">
+                    <button type="button" class="btn" id="syncNowBtn">Sincronizar ahora</button>
+                    <button type="button" class="btn secondary" id="syncOff">Desconectar este dispositivo</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Copias de Seguridad</h2>
+            <p style="font-size:10px; color:var(--muted);">Exporta o importa tus datos.</p>
+            <div class="actions">
+                <button class="btn green" id="exportJson">Exportar JSON</button>
+                <button class="btn secondary" id="exportCsv">Exportar CSV</button>
+                <label class="btn secondary" for="importFile" style="cursor:pointer;">Importar JSON</label>
+                <input type="file" id="importFile" accept=".json" style="display:none">
+            </div>
+            <div style="margin-top:12px;">
+                <button class="btn danger" id="resetData">Restablecer Datos</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    Madrid Río-Arganzuela B · Sistema de Seguimiento
+</footer>
+
+<script>
+const teams = [
+    "A.D. Villaverde Bajo A", "C.D. Orcasur Sin Fronteras A", "E.S.C.F. Juventud Madrid A",
+    "U.D. Usera A", "C.D. Rivas Jarama B", "UD Melida Olimpia - Madrid City Vallecas C",
+    "A.D.C. San Fermín B", "C.D. Betis San Isidro A", "A.J.D.C. La Mancha B",
+    "Racing Villaverde C.F. B", "A.D. Escuela de Fútbol Usera A", "A.D. Orcasitas A"
+];
+
+const fullSeasonSchedule = [
+    { round: 1, opponent: "A.D. Villaverde Bajo A", venue: "Local", date: "2026-10-10", gf: 1, ga: 5, scorers: [{playerId: 7, goals: 1}] },
+    { round: 2, opponent: "C.D. Orcasur Sin Fronteras A", venue: "Visitante", date: "2026-10-17", gf: 2, ga: 6, scorers: [{playerId: 7, goals: 1}, {playerId: 8, goals: 1}] },
+    { round: 3, opponent: "E.S.C.F. Juventud Madrid A", venue: "Local", date: "2026-10-24" },
+    { round: 4, opponent: "U.D. Usera A", venue: "Visitante", date: "2026-10-31" },
+    { round: 5, opponent: "UD Melida Olimpia - Madrid City Vallecas C", venue: "Local", date: "2026-11-07" },
+    { round: 6, opponent: "C.D. Rivas Jarama B", venue: "Visitante", date: "2026-11-14" },
+    { round: 7, opponent: "A.D.C. San Fermín B", venue: "Local", date: "2026-11-21" },
+    { round: 8, opponent: "C.D. Betis San Isidro A", venue: "Visitante", date: "2026-11-28" },
+    { round: 9, opponent: "Jornada de Descanso", venue: "Descanso", date: "2026-12-12" },
+    { round: 10, opponent: "A.J.D.C. La Mancha B", venue: "Visitante", date: "2026-12-19" },
+    { round: 11, opponent: "Racing Villaverde C.F. B", venue: "Visitante", date: "2027-01-16" },
+    { round: 12, opponent: "A.D. Escuela de Fútbol Usera A", venue: "Local", date: "2027-01-23" },
+    { round: 13, opponent: "A.D. Orcasitas A", venue: "Visitante", date: "2027-01-30" },
+    { round: 14, opponent: "A.D. Villaverde Bajo A", venue: "Visitante", date: "2027-02-06" },
+    { round: 15, opponent: "C.D. Orcasur Sin Fronteras A", venue: "Local", date: "2027-02-13" },
+    { round: 16, opponent: "E.S.C.F. Juventud Madrid A", venue: "Visitante", date: "2027-02-20" },
+    { round: 17, opponent: "U.D. Usera A", venue: "Local", date: "2027-02-27" },
+    { round: 18, opponent: "UD Melida Olimpia - Madrid City Vallecas C", venue: "Visitante", date: "2027-03-06" },
+    { round: 19, opponent: "C.D. Rivas Jarama B", venue: "Local", date: "2027-03-13" },
+    { round: 20, opponent: "A.D.C. San Fermín B", venue: "Visitante", date: "2027-03-20" },
+    { round: 21, opponent: "C.D. Betis San Isidro A", venue: "Local", date: "2027-04-03" },
+    { round: 22, opponent: "Jornada de Descanso", venue: "Descanso", date: "2027-04-10" },
+    { round: 23, opponent: "A.J.D.C. La Mancha B", venue: "Local", date: "2027-04-17" },
+    { round: 24, opponent: "Racing Villaverde C.F. B", venue: "Local", date: "2027-04-24" },
+    { round: 25, opponent: "A.D. Escuela de Fútbol Usera A", venue: "Visitante", date: "2027-05-01" },
+    { round: 26, opponent: "A.D. Orcasitas A", venue: "Local", date: "2027-05-08" }
+];
+
+// Firma del calendario: si cambias rival, condición o fecha de la lista de arriba, la firma
+// cambia sola y la app actualiza el calendario guardado en el navegador (conservando resultados).
+const SCHEDULE_SIG = JSON.stringify(fullSeasonSchedule.map(s => [s.round, s.opponent, s.venue, s.date]));
+
+/* ===== CLASIFICACIÓN DEL GRUPO 11: calendario de la federación =====
+   Cada jornada es una línea: partidos "LOCAL-VISITANTE" (con "=goles:goles" si ya hay resultado)
+   y, solo, el código del equipo que descansa. Los resultados nuevos se escriben desde la pestaña
+   Grupo y se guardan en el navegador: no hace falta tocar esta lista.
+   Mis partidos (MR) no llevan marcador aquí: salen de la pestaña Registrar. */
+const OWN_TEAM = "C.F. Madrid Río-Arganzuela B";
+// Cada código se enlaza con su nombre por POSICIÓN en la lista "teams": no cambies su orden
+// (renombrar un equipo sí se puede).
+const LEAGUE_NAMES = {
+    MR: OWN_TEAM,
+    VB: teams[0], OS: teams[1], JM: teams[2], US: teams[3], RJ: teams[4], ME: teams[5],
+    SF: teams[6], BE: teams[7], LM: teams[8], RV: teams[9], EU: teams[10], OC: teams[11]
+};
+const LEAGUE_DATES = [
+    "2026-10-10", "2026-10-17", "2026-10-24", "2026-10-31", "2026-11-07", "2026-11-14", "2026-11-21",
+    "2026-11-28", "2026-12-12", "2026-12-19", "2027-01-16", "2027-01-23", "2027-01-30", "2027-02-06",
+    "2027-02-13", "2027-02-20", "2027-02-27", "2027-03-06", "2027-03-13", "2027-03-20", "2027-04-03",
+    "2027-04-10", "2027-04-17", "2027-04-24", "2027-05-01", "2027-05-08"
+];
+const LEAGUE_ROUNDS = [
+    /* J1  */ "EU-OC=9:2 MR-VB LM-OS=0:20 BE-US=3:9 RV-RJ=2:8 SF-ME JM",
+    /* J2  */ "RJ-SF=3:0 OC-RV=2:1 VB-EU=2:3 ME-BE=1:6 OS-MR JM-LM=14:0 US",
+    /* J3  */ "OC-VB BE-RJ RV-SF EU-OS LM-US MR-JM ME",
+    /* J4  */ "VB-RV US-MR SF-BE OS-OC ME-LM JM-EU RJ",
+    /* J5  */ "VB-OS OC-JM EU-US MR-ME RV-BE LM-RJ SF",
+    /* J6  */ "OS-RV US-OC SF-LM RJ-MR ME-EU JM-VB BE",
+    /* J7  */ "OS-JM VB-US OC-ME EU-RJ MR-SF LM-BE RV",
+    /* J8  */ "US-OS SF-EU BE-MR RJ-OC ME-VB JM-RV LM",
+    /* J9  */ "OS-ME VB-RJ OC-SF EU-BE RV-LM JM-US MR",
+    /* J10 */ "US-RV SF-VB BE-OC LM-MR RJ-OS ME-JM EU",
+    /* J11 */ "US-ME OS-SF VB-BE EU-LM RV-MR JM-RJ OC",
+    /* J12 */ "RV-ME SF-JM BE-OS MR-EU RJ-US LM-OC VB",
+    /* J13 */ "US-SF VB-LM OC-MR EU-RV ME-RJ JM-BE OS",
+    /* J14 */ "OC-EU VB-MR OS-LM US-BE RJ-RV ME-SF JM",
+    /* J15 */ "RV-OC EU-VB MR-OS BE-ME SF-RJ LM-JM US",
+    /* J16 */ "VB-OC OS-EU US-LM SF-RV RJ-BE JM-MR ME",
+    /* J17 */ "RV-VB OC-OS EU-JM MR-US BE-SF LM-ME RJ",
+    /* J18 */ "OS-VB US-EU BE-RV RJ-LM ME-MR JM-OC SF",
+    /* J19 */ "RV-OS VB-JM OC-US EU-ME MR-RJ LM-SF BE",
+    /* J20 */ "US-VB SF-MR BE-LM RJ-EU ME-OC JM-OS RV",
+    /* J21 */ "RV-JM OS-US VB-ME OC-RJ EU-SF MR-BE LM",
+    /* J22 */ "US-JM SF-OC BE-EU RJ-VB LM-RV ME-OS MR",
+    /* J23 */ "RV-US OS-RJ VB-SF OC-BE MR-LM JM-ME EU",
+    /* J24 */ "SF-OS BE-VB MR-RV LM-EU RJ-JM ME-US OC",
+    /* J25 */ "US-RJ OS-BE OC-LM EU-MR ME-RV JM-SF VB",
+    /* J26 */ "SF-US BE-JM MR-OC RV-EU RJ-ME LM-VB OS"
+];
+
+let state = {
+    logo: "",
+    matches: [],
+    teams: {},
+    players: Array.from({length: 16}, (_, i) => ({ id: i+1, number: i+1, name: `Jugador ${i+1}`, position: i===0?'Portero':(i<4?'Defensa':(i<10?'Centrocampista':'Delantero')) })),
+    fieldTokens: [{ id: 1, x: 50, y: 85 }, { id: 2, x: 25, y: 65 }, { id: 3, x: 50, y: 65 }, { id: 4, x: 75, y: 65 }, { id: 5, x: 30, y: 40 }, { id: 6, x: 70, y: 40 }, { id: 7, x: 50, y: 20 }],
+    improvement: "",
+    targetPoints: 24
+};
+
+const $ = id => document.getElementById(id);
+
+function initDefaultMatches() {
+    return fullSeasonSchedule.map(s => ({
+        round: s.round,
+        date: s.date || "",
+        venue: s.venue,
+        opponent: s.opponent,
+        gf: s.gf !== undefined ? s.gf : null,
+        ga: s.ga !== undefined ? s.ga : null,
+        scorers: s.scorers || [],
+        lossGoals: null,
+        chances: null,
+        physical: "",
+        defense: "",
+        build: "",
+        effort: "",
+        notes: ""
+    }));
+}
+
+const RESULT_KEYS = ["gf", "ga", "scorers", "lossGoals", "chances", "physical", "defense", "build", "effort", "notes"];
+
+// El calendario (rival, condición, fecha) manda el del código; los resultados y notas
+// que ya hayas guardado en el navegador se conservan por jornada.
+function syncSchedule() {
+    if (state.scheduleSig === SCHEDULE_SIG && state.matches && state.matches.length === fullSeasonSchedule.length) return;
+
+    const old = new Map((state.matches || []).map(m => [m.round, m]));
+    const conflicts = [];
+
+    state.matches = initDefaultMatches().map(fresh => {
+        const o = old.get(fresh.round);
+        if (!o) return fresh;
+
+        const merged = { ...fresh };
+        const oldPlayed = played(o);
+        RESULT_KEYS.forEach(k => {
+            const isScore = (k === "gf" || k === "ga" || k === "scorers");
+            if (isScore && !oldPlayed) return;      // sin resultado guardado: vale el del código
+            if (o[k] !== undefined) merged[k] = o[k];
+        });
+
+        if (oldPlayed && o.opponent && o.opponent !== fresh.opponent) {
+            conflicts.push(`J${fresh.round}: el resultado guardado era contra "${o.opponent}" y ahora el calendario dice "${fresh.opponent}"`);
+        }
+        return merged;
+    });
+
+    Object.keys(state.leagueOverrides || {}).forEach(r => applyOverrideToCalendar(+r));
+    state.scheduleSig = SCHEDULE_SIG;
+    persist();
+
+    if (conflicts.length) {
+        setTimeout(() => alert("Calendario actualizado.\n\nRevisa estas jornadas:\n" + conflicts.join("\n")), 300);
+    }
+}
+
+/* LEAGUE-LOGIC-START */
+function parseLeague() {
+    return LEAGUE_ROUNDS.map((line, i) => {
+        const out = { round: i + 1, date: LEAGUE_DATES[i], matches: [], rest: null };
+        line.trim().split(/\s+/).forEach(tok => {
+            if (!tok.includes("-")) { out.rest = tok; return; }
+            const [pair, sc] = tok.split("=");
+            const [h, a] = pair.split("-");
+            out.matches.push({ h, a, seed: sc ? sc.split(":").map(Number) : null });
+        });
+        return out;
+    });
+}
+const LEAGUE = parseLeague();
+const leagueScores = () => state.leagueScores || (state.leagueScores = {});
+const lgKey = (r, m) => `${r}|${m.h}|${m.a}`;
+const leagueOvr = () => state.leagueOverrides || (state.leagueOverrides = {});
+
+// Cruces de una jornada: los de la federación, salvo que los hayas corregido a mano
+function leagueRoundData(round) {
+    const base = LEAGUE[round - 1], ov = (state.leagueOverrides || {})[round];
+    if (!ov || !Array.isArray(ov.m) || ov.m.length !== 6 || !ov.r) return base;
+    const seeds = {};
+    base.matches.forEach(m => { if (m.seed) seeds[m.h + "|" + m.a] = m.seed; });
+    return {
+        round, date: base.date, rest: ov.r,
+        matches: ov.m.map(p => ({ h: p[0], a: p[1], seed: seeds[p[0] + "|" + p[1]] || null }))
+    };
+}
+const leagueRounds = () => LEAGUE.map(r => leagueRoundData(r.round));
+
+// "Huecos" de una jornada: 0..11 = local/visitante de cada partido, 12 = equipo que descansa
+function roundSlots(rd) { const s = []; rd.matches.forEach(m => s.push(m.h, m.a)); s.push(rd.rest); return s; }
+function slotsToOverride(s) { const m = []; for (let i = 0; i < 6; i++) m.push([s[2 * i], s[2 * i + 1]]); return { m, r: s[12] }; }
+// Poner un equipo en un hueco: el que lo ocupaba pasa al hueco que deja libre (nadie se repite)
+function setSlot(slots, idx, code) {
+    const out = slots.slice(), j = out.indexOf(code);
+    if (j >= 0 && j !== idx) out[j] = out[idx];
+    out[idx] = code;
+    return out;
+}
+// Si cambia el cruce de mi equipo, el calendario (rival y condición) lo sigue
+function applyOverrideToCalendar(round) {
+    const rd = leagueRoundData(round), mm = state.matches.find(x => x.round === round);
+    if (!mm) return;
+    const mine = rd.matches.find(m => m.h === "MR" || m.a === "MR");
+    if (mine) {
+        const home = mine.h === "MR";
+        mm.opponent = LEAGUE_NAMES[home ? mine.a : mine.h];
+        mm.venue = home ? "Local" : "Visitante";
+    } else {
+        mm.opponent = "Jornada de Descanso"; mm.venue = "Descanso";
+        mm.gf = null; mm.ga = null; mm.scorers = [];
+    }
+}
+
+// [golesLocal, golesVisitante], o null si todavía no hay resultado
+function leagueResult(round, m) {
+    if (m.h === "MR" || m.a === "MR") {            // mis partidos salen de "Registrar"
+        const mm = state.matches.find(x => x.round === round);
+        if (!mm || !played(mm)) return null;
+        return m.h === "MR" ? [Number(mm.gf), Number(mm.ga)] : [Number(mm.ga), Number(mm.gf)];
+    }
+    const ls = leagueScores(), k = lgKey(round, m);
+    return k in ls ? ls[k] : m.seed;               // null guardado = borrado a mano
+}
+
+function computeStandings() {
+    const t = {};
+    Object.keys(LEAGUE_NAMES).forEach(c => {
+        t[c] = { code: c, name: LEAGUE_NAMES[c], pj: 0, g: 0, e: 0, p: 0, gf: 0, gc: 0, pts: 0 };
+    });
+    leagueRounds().forEach(r => r.matches.forEach(m => {
+        const res = leagueResult(r.round, m);
+        if (!res) return;
+        const hs = res[0], as = res[1], H = t[m.h], A = t[m.a];
+        H.pj++; A.pj++;
+        H.gf += hs; H.gc += as; A.gf += as; A.gc += hs;
+        if (hs > as) { H.g++; H.pts += 3; A.p++; }
+        else if (hs < as) { A.g++; A.pts += 3; H.p++; }
+        else { H.e++; A.e++; H.pts++; A.pts++; }
+    }));
+    return Object.values(t).sort((a, b) =>
+        b.pts - a.pts || (b.gf - b.gc) - (a.gf - a.gc) || b.gf - a.gf || a.name.localeCompare(b.name, "es"));
+}
+
+function renderStandings() {
+    $("standingsBody").innerHTML = computeStandings().map((s, i) => {
+        const dg = s.gf - s.gc;
+        return `<tr ${s.code === "MR" ? 'style="background:#e0f2fe; font-weight:700;"' : ""}>
+            <td>${i + 1}</td><td>${esc(s.name)}</td><td>${s.pj}</td>
+            <td><strong>${s.pts}</strong></td><td>${dg > 0 ? "+" : ""}${dg}</td></tr>`;
+    }).join("");
+}
+
+function lgDate(iso) { const p = iso.split("-"); return `${p[2]}/${p[1]}/${p[0]}`; }
+
+let leagueRound = 0;      // jornada visible en la pestaña Clasificación (0 = la última ya jugada)
+let leagueEdit = false;   // true mientras se están corrigiendo los cruces
+
+function renderLeagueTable() {
+    $("leagueTableBody").innerHTML = computeStandings().map((s, i) => {
+        const dg = s.gf - s.gc;
+        return `<tr ${s.code === "MR" ? 'style="background:#e0f2fe; font-weight:700;"' : ""}>
+            <td>${i + 1}</td><td>${esc(s.name)}</td><td>${s.pj}</td><td>${s.g}</td><td>${s.e}</td><td>${s.p}</td>
+            <td>${s.gf}</td><td>${s.gc}</td><td>${dg > 0 ? "+" : ""}${dg}</td><td><strong>${s.pts}</strong></td></tr>`;
+    }).join("");
+}
+
+function renderLeagueRound() {
+    if (!leagueRound) {                       // por defecto: la última jornada ya jugada según su fecha
+        const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        leagueRound = 1;
+        LEAGUE.forEach(r => { if (r.date <= today) leagueRound = r.round; });
+    }
+    const r = leagueRoundData(leagueRound);
+    $("leagueRoundSel").value = leagueRound;
+    $("leaguePrev").disabled = leagueRound <= 1;
+    $("leagueNext").disabled = leagueRound >= LEAGUE.length;
+    $("leagueEditBtn").textContent = leagueEdit ? "Listo" : "Editar cruces";
+    $("leagueEditBtn").classList.toggle("active", leagueEdit);
+    $("leagueEditTools").hidden = !leagueEdit;
+    $("leagueResHint").hidden = leagueEdit;
+    $("leagueRestoreRound").hidden = !leagueOvr()[leagueRound];
+    if (leagueEdit) { $("leagueRoundMatches").innerHTML = renderPairEditor(r); return; }
+
+    $("leagueRoundMatches").innerHTML = r.matches.map((m, i) => {
+        const own = m.h === "MR" || m.a === "MR";
+        const v = leagueResult(r.round, m) || ["", ""];
+        const dis = own ? "disabled" : "";
+        const hn = esc(LEAGUE_NAMES[m.h]), an = esc(LEAGUE_NAMES[m.a]);
+        return `<div class="lg-match${own ? " lg-own" : ""}">
+            <span class="lg-team lg-home">${hn}</span>
+            <span class="lg-score">
+                <input type="number" inputmode="numeric" min="0" max="99" class="lg-in" data-i="${i}" value="${v[0]}" ${dis} aria-label="Goles de ${hn}">
+                <b>-</b>
+                <input type="number" inputmode="numeric" min="0" max="99" class="lg-in" data-i="${i}" value="${v[1]}" ${dis} aria-label="Goles de ${an}">
+            </span>
+            <span class="lg-team lg-away">${an}</span>
+            ${own ? `<button type="button" class="tool-btn lg-edit" data-round="${r.round}">Editar en Registrar</button>` : ""}
+        </div>`;
+    }).join("") + (r.rest ? `<div class="lg-rest">Descansa: <strong>${esc(LEAGUE_NAMES[r.rest])}</strong></div>` : "");
+}
+
+function renderPairEditor(r) {
+    const opts = sel => Object.keys(LEAGUE_NAMES).map(c =>
+        `<option value="${c}" ${c === sel ? "selected" : ""}>${esc(LEAGUE_NAMES[c])}</option>`).join("");
+    const rows = r.matches.map((m, i) => `<div class="lg-match${m.h === "MR" || m.a === "MR" ? " lg-own" : ""}">
+            <select class="lg-sel" data-slot="${2 * i}" aria-label="Equipo local">${opts(m.h)}</select>
+            <span class="lg-vs">vs</span>
+            <select class="lg-sel" data-slot="${2 * i + 1}" aria-label="Equipo visitante">${opts(m.a)}</select>
+        </div>`).join("");
+    return rows + `<div class="lg-match${r.rest === "MR" ? " lg-own" : ""}">
+            <span class="lg-team lg-home">Descansa</span><span></span>
+            <select class="lg-sel" data-slot="12" aria-label="Equipo que descansa">${opts(r.rest)}</select>
+        </div>`;
+}
+
+// Guarda los cruces de una jornada (o los borra si vuelven a ser los de la federación)
+function commitSlots(round, slots) {
+    const def = roundSlots(LEAGUE[round - 1]);
+    const mm = state.matches.find(x => x.round === round);
+    if (slots[12] === "MR" && roundSlots(leagueRoundData(round))[12] !== "MR" && mm && played(mm)) {
+        if (!confirm("Tu equipo pasaría a descansar en esta jornada y se borraría el resultado que tienes guardado. ¿Continuar?")) {
+            renderLeagueRound();
+            return;
+        }
+    }
+    if (slots.join() === def.join()) delete leagueOvr()[round];
+    else leagueOvr()[round] = slotsToOverride(slots);
+    applyOverrideToCalendar(round);
+    persist();
+    renderCalendar();
+    renderDashboard();
+    renderLeagueTable();
+    renderLeagueRound();
+}
+
+function renderLeague() {
+    if (!$("leagueTableBody")) return;
+    renderLeagueTable();
+    renderLeagueRound();
+}
+
+function initLeague() {
+    const sel = $("leagueRoundSel");
+    sel.innerHTML = LEAGUE.map(r => `<option value="${r.round}">J${r.round} · ${lgDate(r.date)}</option>`).join("");
+    sel.onchange = () => { leagueRound = +sel.value; renderLeagueRound(); };
+    $("leaguePrev").onclick = () => { if (leagueRound > 1) { leagueRound--; renderLeagueRound(); } };
+    $("leagueNext").onclick = () => { if (leagueRound < LEAGUE.length) { leagueRound++; renderLeagueRound(); } };
+
+    const box = $("leagueRoundMatches");
+    // Solo se refresca la tabla (no la lista) para no quitar el foco al teclear en el siguiente partido.
+    box.addEventListener("change", e => {
+        const sel2 = e.target.closest(".lg-sel");
+        if (sel2) {
+            commitSlots(leagueRound, setSlot(roundSlots(leagueRoundData(leagueRound)), +sel2.dataset.slot, sel2.value));
+            return;
+        }
+        const inp = e.target.closest(".lg-in");
+        if (!inp) return;
+        const row = inp.closest(".lg-match");
+        const ins = row.querySelectorAll(".lg-in");
+        const m = leagueRoundData(leagueRound).matches[+inp.dataset.i];
+        const hv = ins[0].value.trim(), av = ins[1].value.trim();
+        const key = lgKey(leagueRound, m);
+        if (hv === "" && av === "") {
+            leagueScores()[key] = null;
+        } else if (hv !== "" && av !== "") {
+            const sc = [clamp(parseInt(hv, 10) || 0, 0, 99), clamp(parseInt(av, 10) || 0, 0, 99)];
+            leagueScores()[key] = sc;
+            ins[0].value = sc[0]; ins[1].value = sc[1];
+        } else {
+            return;   // falta el otro marcador: se espera a que lo escribas
+        }
+        persist();
+        renderLeagueTable();
+        row.classList.add("lg-saved");
+        setTimeout(() => row.classList.remove("lg-saved"), 900);
+    });
+    box.addEventListener("click", e => {
+        const b = e.target.closest(".lg-edit");
+        if (!b) return;
+        loadForm(+b.dataset.round);
+        document.querySelector('[data-tab="match"]').click();
+    });
+
+    $("leagueEditBtn").onclick = () => { leagueEdit = !leagueEdit; renderLeagueRound(); };
+    $("leagueRestoreRound").onclick = () => {
+        if (confirm("¿Volver a los cruces originales de esta jornada?")) {
+            commitSlots(leagueRound, roundSlots(LEAGUE[leagueRound - 1]));
+        }
+    };
+    $("leagueReset").onclick = () => {
+        if (confirm("¿Volver a los datos iniciales del grupo? Se borran los resultados y los cruces que hayas cambiado a mano (tus propios partidos no se tocan).")) {
+            const rs = Object.keys(leagueOvr());
+            state.leagueScores = {};
+            state.leagueOverrides = {};
+            rs.forEach(r => applyOverrideToCalendar(+r));
+            persist();
+            renderCalendar();
+            renderDashboard();
+            renderLeague();
+        }
+    };
+    renderLeague();
+}
+/* LEAGUE-LOGIC-END */
+
+/* SYNC-CLIENT-START */
+/* ===== SINCRONIZACIÓN DEL EQUIPO =====
+   Los datos se reparten en "celdas" (un campo de un jugador, un campo de una jornada, un resultado del
+   grupo...). Cada dispositivo envía solo las celdas que ha cambiado y recibe las de los demás; si dos
+   personas cambian exactamente la misma celda, gana la última en llegar. */
+const SYNC = { url: "/api/sync", key: "madridRioB_sync_v1", meta: {}, busy: false, again: false, force: false,
+               timer: 0, status: "off", detail: "", pendingRender: false, choice: null, last: 0 };
+const MATCH_FIELDS = ["date", "venue", "opponent", "gf", "ga", "scorers", "lossGoals", "chances",
+                      "physical", "defense", "build", "effort", "notes"];
+
+function cyrb53(str) {
+    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+}
+const cellHash = v => cyrb53(JSON.stringify(v === undefined ? null : v));
+
+function stateToCells(s) {
+    const c = {};
+    (s.players || []).forEach(p => ["number", "name", "position"].forEach(f => { c[`pl:${p.id}:${f}`] = p[f]; }));
+    (s.matches || []).forEach(m => MATCH_FIELDS.forEach(f => { c[`mt:${m.round}:${f}`] = m[f] === undefined ? null : m[f]; }));
+    Object.entries(s.leagueScores || {}).forEach(([k, v]) => { c["ls:" + k] = v; });
+    Object.entries(s.leagueOverrides || {}).forEach(([k, v]) => { c["lo:" + k] = v; });
+    Object.entries(s.teams || {}).forEach(([k, v]) => { c["tm:" + k] = v; });
+    c.fld = s.fieldTokens || [];
+    c.imp = s.improvement || "";
+    c.tgt = s.targetPoints === undefined ? 24 : s.targetPoints;
+    c.logo = s.logo || "";
+    return c;
+}
+
+function applyCell(s, key, cell) {
+    const del = cell.d === 1, v = cell.v;
+    const p = key.split(":");
+    if (p[0] === "pl") {
+        let pl = s.players.find(x => x.id === +p[1]);
+        if (!pl) { pl = { id: +p[1], number: +p[1], name: `Jugador ${p[1]}`, position: "Delantero" }; s.players.push(pl); }
+        if (!del) pl[p[2]] = v;
+    } else if (p[0] === "mt") {
+        const m = s.matches.find(x => x.round === +p[1]);
+        if (m && !del) m[p[2]] = v;
+    } else if (p[0] === "ls") {
+        s.leagueScores = s.leagueScores || {};
+        if (del) delete s.leagueScores[key.slice(3)]; else s.leagueScores[key.slice(3)] = v;
+    } else if (p[0] === "lo") {
+        s.leagueOverrides = s.leagueOverrides || {};
+        if (del) delete s.leagueOverrides[p[1]]; else s.leagueOverrides[p[1]] = v;
+    } else if (p[0] === "tm") {
+        s.teams = s.teams || {};
+        if (del) delete s.teams[key.slice(3)]; else s.teams[key.slice(3)] = v;
+    } else if (key === "fld") { if (!del) s.fieldTokens = v; }
+    else if (key === "imp") { if (!del) s.improvement = v; }
+    else if (key === "tgt") { if (!del) s.targetPoints = v; }
+    else if (key === "logo") { if (!del) s.logo = v; }
+}
+
+function makeDefaultState() {
+    return {
+        logo: "", matches: initDefaultMatches(), teams: {},
+        players: Array.from({length: 16}, (_, i) => ({ id: i+1, number: i+1, name: `Jugador ${i+1}`, position: i===0?'Portero':(i<4?'Defensa':(i<10?'Centrocampista':'Delantero')) })),
+        fieldTokens: [{ id: 1, x: 50, y: 85 }, { id: 2, x: 25, y: 65 }, { id: 3, x: 50, y: 65 }, { id: 4, x: 75, y: 65 }, { id: 5, x: 30, y: 40 }, { id: 6, x: 70, y: 40 }, { id: 7, x: 50, y: 20 }],
+        improvement: "", targetPoints: 24, leagueScores: {}, leagueOverrides: {}, scheduleSig: SCHEDULE_SIG
+    };
+}
+
+function isDefaultState() {
+    const a = stateToCells(state), b = stateToCells(makeDefaultState());
+    const ka = Object.keys(a);
+    return ka.length === Object.keys(b).length && ka.every(k => k in b && cellHash(a[k]) === cellHash(b[k]));
+}
+
+function loadSyncMeta() { try { return JSON.parse(localStorage.getItem(SYNC.key)) || {}; } catch (e) { return {}; } }
+function saveSyncMeta() { try { localStorage.setItem(SYNC.key, JSON.stringify(SYNC.meta)); } catch (e) {} }
+function persistLocal() { try { localStorage.setItem("madridRioBTracker_v9", JSON.stringify(state)); } catch (e) {} }
+
+async function syncApi(body, code) {
+    const r = await fetch(SYNC.url, {
+        method: "POST", cache: "no-store",
+        headers: { "content-type": "application/json", "x-team-code": code || "" },
+        body: JSON.stringify(body)
+    });
+    let data = null;
+    try { data = await r.json(); } catch (e) {}
+    return { status: r.status, data };
+}
+
+/* ---------- estado visible (chip de la cabecera y panel de Datos) ---------- */
+function setSyncStatus(kind, detail) {
+    SYNC.status = kind;
+    SYNC.detail = detail || "";
+    renderSyncUI();
+}
+function renderSyncUI() {
+    const pill = $("syncPill");
+    if (!pill) return;
+    const L = {
+        off: ["☁ Sin sincronizar", ""], busy: ["⟳ Sincronizando…", ""], ok: ["☁ Sincronizado", "ok"],
+        offline: ["⚠ Sin conexión", "warn"], auth: ["🔒 Código incorrecto", "warn"],
+        choice: ["❓ Elige qué datos usar", "warn"], nosrv: ["⚠ Sin servidor", "warn"]
+    }[SYNC.status];
+    pill.textContent = L[0];
+    pill.className = "pill sync-pill " + L[1];
+    const connected = !!SYNC.meta.code;
+    const msg = {
+        ok: SYNC.last ? "Conectado. Última sincronización: " + new Date(SYNC.last).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }) + "." : "Conectado.",
+        busy: "Sincronizando…",
+        offline: "Sin conexión. Tus cambios se guardan en este dispositivo y se enviarán solos al volver la conexión.",
+        nosrv: "No se encuentra el servidor de sincronización. Solo funciona en la web publicada en Netlify (no abriendo el archivo directamente).",
+        auth: "El código del equipo no es correcto.",
+        choice: "Este dispositivo tiene datos propios y el equipo ya tiene los suyos. Elige cuáles quieres conservar.",
+        off: connected ? "" : "Sin conectar: los datos solo se guardan en este dispositivo."
+    }[SYNC.status];
+    $("syncState").textContent = SYNC.detail || msg;
+    $("syncSetup").hidden = connected || SYNC.status === "choice";
+    $("syncChoice").hidden = SYNC.status !== "choice";
+    $("syncConnected").hidden = !connected || SYNC.status === "choice";
+}
+
+/* ---------- sincronizar ---------- */
+function syncSoon() {
+    if (!SYNC.meta || !SYNC.meta.code || !SYNC.meta.joined) return;
+    clearTimeout(SYNC.timer);
+    SYNC.timer = setTimeout(() => syncNow(true), 1500);
+}
+
+async function syncNow(force) {
+    if (!SYNC.meta.code || SYNC.choice) return;
+    if (location.protocol === "file:") { setSyncStatus("nosrv"); return; }
+    if (SYNC.busy) { SYNC.again = true; SYNC.force = SYNC.force || !!force; return; }
+    if (!force && Date.now() - SYNC.last < 5000) return;
+    SYNC.busy = true;
+    setSyncStatus("busy");
+    try {
+        const first = !SYNC.meta.joined;
+        const cells = stateToCells(state), snap = SYNC.meta.snap || {}, changes = {}, sent = {};
+        if (!first) {
+            Object.keys(cells).forEach(k => {
+                const h = cellHash(cells[k]);
+                if (snap[k] !== h) { changes[k] = { v: cells[k] }; sent[k] = h; }
+            });
+            Object.keys(snap).forEach(k => { if (!(k in cells)) { changes[k] = { d: 1 }; sent[k] = null; } });
+        }
+        // De vez en cuando (y al abrir la app) se compara todo con el servidor por si alguna escritura se perdió
+        const verify = !first && Date.now() - (SYNC.meta.verifiedAt || 0) > 600000;
+        const r = await syncApi({ action: "sync", since: first || verify ? 0 : SYNC.meta.rev, changes }, SYNC.meta.code);
+        if (r.status === 404 || r.status === 405) { setSyncStatus("nosrv"); return; }
+        if (r.status === 401) { SYNC.meta = {}; saveSyncMeta(); setSyncStatus("auth"); return; }
+        if (r.status === 403) { SYNC.meta = {}; saveSyncMeta(); setSyncStatus("off", "Todavía no hay código del equipo: pulsa «Crear código nuevo»."); return; }
+        if (r.status !== 200 || !r.data) { setSyncStatus("offline", "Error del servidor (" + r.status + "). Se reintentará solo."); return; }
+        const res = r.data;
+        if (res.reset && !first) {            // el servidor se vació: se vuelve a subir todo lo de este dispositivo
+            SYNC.meta.snap = {}; SYNC.meta.rev = 0; saveSyncMeta();
+            SYNC.again = true; SYNC.force = true;
+            return;
+        }
+        if (first) syncFirst(res); else syncApply(res, sent, verify);
+        if (verify) { SYNC.meta.verifiedAt = Date.now(); saveSyncMeta(); }
+        SYNC.last = Date.now();
+        if (!SYNC.choice && !SYNC.again) setSyncStatus("ok");   // si queda una subida pendiente, sigue "sincronizando"
+    } catch (e) {
+        setSyncStatus("offline");
+    } finally {
+        SYNC.busy = false;
+        if (SYNC.again) { const f = SYNC.force; SYNC.again = false; SYNC.force = false; setTimeout(() => syncNow(f), 50); }
+    }
+}
+
+// Primera conexión de este dispositivo: nunca se sube nada sin que esté claro quién manda
+function syncFirst(res) {
+    const live = Object.values(res.cells).filter(c => c.d !== 1).length;
+    if (!live) {                              // el equipo aún no tiene datos: este dispositivo los aporta
+        SYNC.meta.joined = true; SYNC.meta.rev = res.rev; SYNC.meta.snap = {}; saveSyncMeta();
+        SYNC.again = true; SYNC.force = true;
+        return;
+    }
+    if (isDefaultState()) { adoptServer(res); return; }   // dispositivo sin cambios propios: copia lo del equipo
+    SYNC.choice = res;
+    setSyncStatus("choice");
+}
+
+function adoptServer(res) {
+    const s = makeDefaultState();
+    Object.entries(res.cells).forEach(([k, c]) => applyCell(s, k, c));
+    s.players.sort((a, b) => a.id - b.id);
+    state = s;
+    const snap = {};
+    Object.entries(res.cells).forEach(([k, c]) => { if (c.d !== 1) snap[k] = cellHash(c.v); });
+    SYNC.meta.joined = true; SYNC.meta.rev = res.rev; SYNC.meta.snap = snap; saveSyncMeta();
+    persistLocal();
+    renderLogo(state.logo); renderAll();
+    $("targetPoints").value = state.targetPoints;
+    loadForm(+$("fRound").value || 1);
+}
+
+function syncApply(res, sent, verify) {
+    const snap = SYNC.meta.snap || (SYNC.meta.snap = {});
+    const prevRev = SYNC.meta.rev;
+    const cur = stateToCells(state);          // estado de ahora (puede haber cambiado durante la petición)
+    let changed = false, lost = false;
+    Object.entries(res.cells).forEach(([k, c]) => {
+        if (k in sent) {                      // lo enviamos nosotros: ya está en el servidor
+            if (sent[k] === null) delete snap[k]; else snap[k] = sent[k];
+            return;
+        }
+        const localH = k in cur ? cellHash(cur[k]) : null;
+        const baseH = k in snap ? snap[k] : null;
+        const serverH = c.d === 1 ? null : cellHash(c.v);
+        if (verify && c.r <= prevRev) {       // esto ya lo dábamos por sincronizado: si el servidor tiene otra cosa, perdió el nuestro
+            if (serverH !== baseH) { delete snap[k]; lost = true; }
+            return;
+        }
+        if (localH !== baseH) return;         // lo cambiaste tú mientras tanto: se queda lo tuyo y se envía en la próxima
+        if (serverH === baseH) return;
+        applyCell(state, k, c);
+        if (c.d === 1) delete snap[k]; else snap[k] = cellHash(c.v);
+        changed = true;
+    });
+    if (verify) {                             // celdas que damos por sincronizadas y que el servidor ya no tiene
+        Object.keys(snap).forEach(k => { if (!(k in res.cells) && !(k in sent)) { delete snap[k]; lost = true; } });
+    }
+    if (lost) { SYNC.again = true; SYNC.force = true; }   // se vuelven a subir
+    SYNC.meta.rev = res.rev;
+    saveSyncMeta();
+    if (changed) {
+        state.players.sort((a, b) => a.id - b.id);
+        persistLocal();
+        refreshAfterRemote();
+    }
+}
+
+// Si estás escribiendo o arrastrando no se repinta la pantalla: se espera a que termines
+function refreshAfterRemote() {
+    const a = document.activeElement;
+    const typing = a && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName);
+    if (typing || dragging) { SYNC.pendingRender = true; return; }
+    SYNC.pendingRender = false;
+    renderLogo(state.logo);
+    renderAll();
+    $("targetPoints").value = state.targetPoints;
+}
+
+async function syncConnect(create) {
+    const code = $("syncCode").value.trim();
+    if (code.length < 8) { setSyncStatus("off", "El código debe tener al menos 8 caracteres."); return; }
+    setSyncStatus("busy");
+    try {
+        if (create) {
+            const r = await syncApi({ action: "claim" }, code);
+            if (r.status === 404 || r.status === 405) { setSyncStatus("nosrv"); return; }
+            if (r.status === 409) { setSyncStatus("off", "Ya existe un código del equipo. Pulsa «Conectar» y escríbelo."); return; }
+            if (r.status !== 200) { setSyncStatus("off", "No se pudo crear el código (error " + r.status + ")."); return; }
+        }
+        SYNC.meta = { code, rev: 0, snap: {}, joined: false };
+        saveSyncMeta();
+        $("syncCode").value = "";
+        await syncNow(true);
+    } catch (e) {
+        setSyncStatus("offline");
+    }
+}
+
+function syncUseTeam() {
+    const res = SYNC.choice;
+    SYNC.choice = null;
+    adoptServer(res);
+    SYNC.last = Date.now();
+    setSyncStatus("ok");
+}
+function syncUseMine() {
+    const res = SYNC.choice;
+    SYNC.choice = null;
+    const snap = {};
+    Object.entries(res.cells).forEach(([k, c]) => { if (c.d !== 1) snap[k] = cellHash(c.v); });
+    SYNC.meta.joined = true; SYNC.meta.rev = res.rev; SYNC.meta.snap = snap; saveSyncMeta();
+    syncNow(true);                            // sustituye lo del equipo por lo de este dispositivo
+}
+
+function shrinkImage(dataUrl, max, cb) {
+    const img = new Image();
+    img.onload = () => {
+        const k = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(img.width * k));
+        c.height = Math.max(1, Math.round(img.height * k));
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        try { cb(c.toDataURL("image/png")); } catch (e) { cb(dataUrl); }
+    };
+    img.onerror = () => cb(dataUrl);
+    img.src = dataUrl;
+}
+
+function initSync() {
+    SYNC.meta = loadSyncMeta();
+    $("targetPoints").value = state.targetPoints;
+    $("syncPill").onclick = () => {
+        document.querySelector('[data-tab="backup"]').click();
+        $("syncPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    $("syncConnect").onclick = () => syncConnect(false);
+    $("syncCreate").onclick = () => syncConnect(true);
+    $("syncNowBtn").onclick = () => syncNow(true);
+    $("syncUseTeam").onclick = syncUseTeam;
+    $("syncUseMine").onclick = syncUseMine;
+    $("syncBackup").onclick = () => $("exportJson").onclick();
+    $("syncOff").onclick = () => {
+        if (confirm("¿Desconectar este dispositivo? Sus datos se quedan aquí, pero dejarán de sincronizarse con el equipo.")) {
+            SYNC.meta = {}; saveSyncMeta(); setSyncStatus("off");
+        }
+    };
+    setSyncStatus(SYNC.meta.code ? "busy" : "off");
+    setInterval(() => { if (!document.hidden) syncNow(); }, 60000);
+    setInterval(() => { if (SYNC.pendingRender) refreshAfterRemote(); }, 1500);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) syncNow(); });
+    window.addEventListener("online", () => syncNow(true));
+    window.addEventListener("focus", () => syncNow());
+    syncNow(true);
+}
+/* SYNC-CLIENT-END */
+
+function load() {
+    try {
+        const stored = localStorage.getItem("madridRioBTracker_v9");
+        if (stored) {
+            state = { ...state, ...JSON.parse(stored) };
+        }
+    } catch(e) {}
+
+    if (!state.matches || state.matches.length !== 26) {
+        state.matches = initDefaultMatches();
+    }
+    syncSchedule();
+    if (!state.players || state.players.length !== 16) {
+        state.players = Array.from({length: 16}, (_, i) => ({ id: i+1, number: i+1, name: `Jugador ${i+1}`, position: i===0?'Portero':(i<4?'Defensa':(i<10?'Centrocampista':'Delantero')) }));
+    }
+    if (state.logo) {
+        renderLogo(state.logo);
+    }
+}
+
+function persist() {
+    try { localStorage.setItem("madridRioBTracker_v9", JSON.stringify(state)); }
+    catch (e) { console.warn("No se pudo guardar en este dispositivo", e); }
+    syncSoon();
+}
+
+function played(m) { return m.gf !== null && m.ga !== null && m.gf !== "" && m.ga !== ""; }
+function pts(m) {
+    if (!played(m)) return 0;
+    return Number(m.gf) > Number(m.ga) ? 3 : (Number(m.gf) === Number(m.ga) ? 1 : 0);
+}
+
+function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function renderLogo(dataUrl) {
+    if (dataUrl) {
+        $("teamLogoImg").src = dataUrl;
+        $("teamLogoImg").style.display = "block";
+        $("teamLogoPlaceholder").style.display = "none";
+    } else {
+        $("teamLogoImg").style.display = "none";
+        $("teamLogoPlaceholder").style.display = "flex";
+    }
+}
+
+$("logoInput").addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            shrinkImage(evt.target.result, 256, function(url) {
+                state.logo = url;
+                renderLogo(state.logo);
+                persist();
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function totals() {
+    let ms = state.matches.filter(played);
+    let w = ms.filter(m => pts(m) === 3).length;
+    let d = ms.filter(m => pts(m) === 1).length;
+    let l = ms.length - w - d;
+    let gf = ms.reduce((a, m) => a + Number(m.gf), 0);
+    let ga = ms.reduce((a, m) => a + Number(m.ga), 0);
+    let points = ms.reduce((a, m) => a + pts(m), 0);
+    return { ms, w, d, l, gf, ga, points };
+}
+
+function getScorersStats() {
+    let map = {};
+    state.players.forEach(p => { map[p.id] = { name: p.name, number: p.number, position: p.position, goals: 0 }; });
+    
+    state.matches.forEach(m => {
+        if (played(m) && m.scorers) {
+            m.scorers.forEach(s => {
+                if (map[s.playerId]) {
+                    map[s.playerId].name = state.players.find(p => p.id === s.playerId)?.name || map[s.playerId].name;
+                    map[s.playerId].goals += Number(s.goals || 0);
+                }
+            });
+        }
+    });
+
+    return Object.values(map).sort((a, b) => b.goals - a.goals);
+}
+
+function renderTopScorers() {
+    let scorers = getScorersStats();
+    let top3 = scorers.slice(0, 3);
+
+    $("topScorersContainer").innerHTML = top3.length ? top3.map((s, idx) => `
+        <div class="scorer-item">
+            <span><strong>#${idx+1}</strong> ${esc(s.name)}</span>
+            <span class="scorer-badge">${s.goals} goles</span>
+        </div>
+    `).join("") : '<span style="font-size:10px; color:var(--muted);">Sin goles.</span>';
+}
+
+function openAllScorersModal() {
+    let scorers = getScorersStats();
+    $("fullScorersBody").innerHTML = scorers.map(s => `
+        <tr>
+            <td><strong>#${s.number}</strong> ${esc(s.name)}</td>
+            <td>${esc(s.position)}</td>
+            <td><strong>${s.goals}</strong></td>
+        </tr>
+    `).join("");
+    $("scorersModal").style.display = "flex";
+}
+
+function closeAllScorersModal() {
+    $("scorersModal").style.display = "none";
+}
+
+function renderDashboard() {
+    let t = totals();
+    $("mPoints").textContent = t.points;
+    $("mRecord").textContent = `${t.w}V · ${t.d}E · ${t.l}D`;
+    $("mPlayed").textContent = `${t.ms.length}/${state.matches.filter(m => m.venue !== "Descanso").length}`;
+    $("mGoals").textContent = `${t.gf} / ${t.ga}`;
+    $("mDiff").textContent = `Dif: ${t.gf - t.ga > 0 ? "+" : ""}${t.gf - t.ga}`;
+    $("mTargetDisplay").textContent = state.targetPoints;
+    $("mTargetSub").textContent = `Faltan ${Math.max(0, state.targetPoints - t.points)}`;
+
+    let rec = t.ms.slice(-4).reverse();
+    $("recentMatches").innerHTML = rec.length ? `
+        <div class="tablewrap">
+            <table>
+                <thead><tr><th>Jornada</th><th>Rival</th><th>Resultado</th><th>Estado</th></tr></thead>
+                <tbody>${rec.map(m => `
+                    <tr>
+                        <td>J${m.round}</td>
+                        <td>${esc(m.opponent)}</td>
+                        <td><strong>${m.gf}-${m.ga}</strong></td>
+                        <td><span class="badge ${pts(m)===3?'win':(pts(m)===1?'draw':'loss')}">${pts(m)===3?'Victoria':(pts(m)===1?'Empate':'Derrota')}</span></td>
+                    </tr>
+                `).join("")}</tbody>
+            </table>
+        </div>
+    ` : '<div class="empty" style="color:var(--muted); text-align:center; padding:8px; font-size:10px;">Sin resultados.</div>';
+
+    renderTopScorers();
+    renderStandings();
+    drawGoals();
+    drawPoints();
+}
+
+function canvasSetup(id) {
+    let c = $(id), r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    let width = Math.max(200, r.width);
+    c.width = width * dpr;
+    c.height = 160 * dpr;
+    let ctx = c.getContext("2d");
+    ctx.scale(dpr, dpr);
+    return { ctx, w: width, h: 160 };
+}
+
+function drawGoals() {
+    let { ctx, w, h } = canvasSetup("goalsChart");
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.fillStyle = "#64748b";
+    ctx.font = "9px system-ui";
+
+    let ms = state.matches.filter(played).slice(-6);
+    if (!ms.length) {
+        ctx.fillStyle = "#64748b";
+        ctx.fillText("Sin datos", 20, 80);
+        return;
+    }
+
+    let step = (w - 20) / ms.length;
+    ms.forEach((m, i) => {
+        let x = 16 + i * step;
+        let bw = Math.max(3, step * 0.25);
+        let y1 = 125 - Number(m.gf) * 10;
+        let y2 = 125 - Number(m.ga) * 10;
+
+        ctx.fillStyle = "#0284c7";
+        ctx.fillRect(x, y1, bw, Math.max(2, Number(m.gf) * 10));
+        ctx.fillStyle = "#ef4444";
+        ctx.fillRect(x + bw + 2, y2, bw, Math.max(2, Number(m.ga) * 10));
+
+        ctx.fillStyle = "#64748b";
+        ctx.fillText("J" + m.round, x, 145);
+    });
+}
+
+function drawPoints() {
+    let { ctx, w, h } = canvasSetup("pointsChart");
+    ctx.clearRect(0, 0, w, h);
+    let t = totals();
+    let bars = [["Vic", t.w, "#10b981"], ["Emp", t.d, "#f59e0b"], ["Der", t.l, "#ef4444"]];
+    let max = Math.max(1, ...bars.map(x => x[1]));
+
+    bars.forEach((b, i) => {
+        let y = 18 + i * 38;
+        let bw = (w - 70) * (b[1] / max);
+        ctx.fillStyle = "#64748b";
+        ctx.font = "9px system-ui";
+        ctx.fillText(b[0], 4, y + 10);
+        ctx.fillStyle = b[2];
+        ctx.fillRect(50, y, Math.max(4, bw), 14);
+        ctx.fillStyle = "#0f172a";
+        ctx.fillText(String(b[1]), 55 + bw, y + 10);
+    });
+}
+
+function renderCalendar() {
+    let rf = $("roundFilter").value;
+    let sf = $("statusFilter").value;
+
+    let filtered = state.matches.filter(m => {
+        if (rf && m.round !== +rf) return false;
+        if (sf === "played" && !played(m)) return false;
+        if (sf === "pending" && played(m)) return false;
+        return true;
+    });
+
+    $("calendarBody").innerHTML = filtered.map(m => `
+        <tr>
+            <td><strong>J${m.round}</strong></td>
+            <td>${esc(m.date || "S/F")}</td>
+            <td><span class="badge ${m.venue==='Local'?'win':'pending'}">${esc(m.venue.substring(0,3))}</span></td>
+            <td>${esc(m.opponent)}</td>
+            <td><strong>${played(m) ? `${m.gf}-${m.ga}` : "—"}</strong></td>
+            <td>
+                ${m.venue === "Descanso" ? '<span class="badge pending">Desc</span>' : !played(m) ? '<span class="badge pending">Pend</span>' : 
+                  (pts(m)===3 ? '<span class="badge win">Win</span>' : 
+                  (pts(m)===1 ? '<span class="badge draw">Emp</span>' : '<span class="badge loss">Der</span>'))}
+            </td>
+            <td>${m.venue === "Descanso" ? "—" : `<button class="btn secondary edit-btn" style="padding:2px 5px; font-size:9px;" data-round="${m.round}">Edit</button>`}</td>
+        </tr>
+    `).join("");
+
+    document.querySelectorAll(".edit-btn").forEach(b => {
+        b.onclick = () => {
+            loadForm(+b.dataset.round);
+            document.querySelector('[data-tab="match"]').click();
+        };
+    });
+}
+
+function renderMatchScorers(scorers = []) {
+    let container = $("matchScorersList");
+    container.innerHTML = "";
+    scorers.forEach((s) => {
+        let row = document.createElement("div");
+        row.className = "scorer-row";
+        row.innerHTML = `
+            <select class="scorer-player" style="flex:2; font-size:10px;">
+                ${state.players.map(p => `<option value="${p.id}" ${p.id === s.playerId ? 'selected' : ''}>#${p.number} -${esc(p.name)}</option>`).join("")}
+            </select>
+            <input type="number" class="scorer-goals" value="${s.goals}" min="1" max="20" style="flex:1; font-size:10px;" placeholder="Goles">
+            <button type="button" class="tool-btn" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5;" onclick="this.parentElement.remove()">✕</button>
+        `;
+        container.appendChild(row);
+    });
+}
+
+function addScorerRow() {
+    let container = $("matchScorersList");
+    let row = document.createElement("div");
+    row.className = "scorer-row";
+    row.innerHTML = `
+        <select class="scorer-player" style="flex:2; font-size:10px;">
+            ${state.players.map(p => `<option value="${p.id}">#${p.number} -${esc(p.name)}</option>`).join("")}
+        </select>
+        <input type="number" class="scorer-goals" value="1" min="1" max="20" style="flex:1; font-size:10px;" placeholder="Goles">
+        <button type="button" class="tool-btn" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5;" onclick="this.parentElement.remove()">✕</button>
+    `;
+    container.appendChild(row);
+}
+
+let currentTool = 'move';
+let dragging = false;            // true mientras hay un arrastre activo (bloquea el scroll táctil)
+let suppressClickUntil = 0;      // evita que el "click" posterior a un arrastre añada la ficha
+const strokes = [];              // trazos de la pizarra (coordenadas normalizadas 0..1)
+let canvas, ctx, currentStroke = null;
+
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+function setTool(tool) {
+    currentTool = tool;
+    $("toolMove").classList.toggle("active", tool === 'move');
+    $("toolDraw").classList.toggle("active", tool === 'draw');
+    $("boardCanvas").classList.toggle("drawing-active", tool === 'draw');
+    $("tokensContainer").classList.toggle("tokens-locked", tool === 'draw');
+}
+
+function markOnField() {
+    const on = new Set(state.fieldTokens.map(t => t.id));
+    document.querySelectorAll(".player-card").forEach(c => {
+        c.classList.toggle("on-field", on.has(+c.dataset.playerId));
+    });
+}
+
+const POSITIONS = ["Portero", "Defensa", "Lateral", "Centrocampista", "Extremo", "Delantero"];
+
+function renderPlayers() {
+    $("playersList").innerHTML = state.players.map(p => {
+        const opts = POSITIONS.includes(p.position) ? POSITIONS : [...POSITIONS, p.position];
+        return `
+        <div class="player-card" data-player-id="${p.id}">
+            <span class="player-grip" title="Arrastra para colocar en el campo" aria-hidden="true">⋮⋮</span>
+            <input class="player-number-input" type="number" inputmode="numeric" min="0" max="99" data-id="${p.id}" data-f="number" value="${esc(p.number)}" aria-label="Dorsal">
+            <div class="player-info">
+                <input class="player-name-input" data-id="${p.id}" data-f="name" value="${esc(p.name)}" aria-label="Nombre">
+                <select class="player-pos-select" data-id="${p.id}" data-f="position" aria-label="Posición">
+                    ${opts.map(o => `<option value="${esc(o)}" ${o === p.position ? "selected" : ""}>${esc(o)}</option>`).join("")}
+                </select>
+            </div>
+        </div>`;
+    }).join("");
+
+    document.querySelectorAll("#playersList [data-f]").forEach(el => { el.onchange = onPlayerFieldChange; });
+    renderFieldTokens();
+}
+
+function onPlayerFieldChange(e) {
+    const el = e.target, f = el.dataset.f;
+    const p = state.players.find(x => x.id === +el.dataset.id);
+    if (!p) return;
+    if (f === "number") {
+        const n = parseInt(el.value, 10);
+        if (isNaN(n) || n < 0 || n > 99) { el.value = p.number; return; }
+        const other = state.players.find(x => x.id !== p.id && Number(x.number) === n);
+        if (other) {
+            alert(`El dorsal ${n} ya lo lleva ${other.name}.`);
+            el.value = p.number;
+            return;
+        }
+        p.number = n;
+        el.value = n;
+    } else if (f === "name") {
+        p.name = el.value.trim() || `Jugador ${p.id}`;
+        el.value = p.name;
+    } else if (f === "position") {
+        p.position = el.value;
+    }
+    persist();
+    renderFieldTokens();
+    renderDashboard();
+    refreshScorerOptions();
+}
+
+// Los desplegables de goleadores (pestaña Registrar) muestran dorsal y nombre: se mantienen al día
+function refreshScorerOptions() {
+    document.querySelectorAll(".scorer-player").forEach(sel => {
+        const cur = sel.value;
+        sel.innerHTML = state.players.map(p => `<option value="${p.id}">#${p.number} -${esc(p.name)}</option>`).join("");
+        sel.value = cur;
+    });
+}
+
+function renderFieldTokens() {
+    $("tokensContainer").innerHTML = state.fieldTokens.map(ft => {
+        let p = state.players.find(x => x.id === ft.id) || { number: ft.id, name: `Jugador ${ft.id}` };
+        return `<div class="field-token" data-pid="${ft.id}" style="top:${ft.y}%; left:${ft.x}%;" title="${esc(p.name)}">${p.number}</div>`;
+    }).join("");
+    markOnField();
+}
+
+function addOrMoveToken(pid, x, y) {
+    const ex = state.fieldTokens.find(t => t.id === pid);
+    if (ex) { ex.x = x; ex.y = y; } else state.fieldTokens.push({ id: pid, x, y });
+    persist();
+    renderFieldTokens();
+}
+
+/* ------------------------------------------------------------------
+   Arrastre unificado con Pointer Events (ratón, dedo y lápiz).
+   Los listeners se registran UNA sola vez (delegación de eventos).
+------------------------------------------------------------------- */
+function initTactics() {
+    const field = $("tacticalField");
+    const tokens = $("tokensContainer");
+    const list = $("playersList");
+    const bench = $("benchZone");
+
+    const pctPos = (cx, cy) => {
+        const r = field.getBoundingClientRect();
+        return {
+            x: clamp((cx - r.left) / r.width * 100, 4, 96),
+            y: clamp((cy - r.top) / r.height * 100, 4, 96)
+        };
+    };
+    const inside = (el, cx, cy, pad = 0) => {
+        const r = el.getBoundingClientRect();
+        return cx >= r.left - pad && cx <= r.right + pad && cy >= r.top - pad && cy <= r.bottom + pad;
+    };
+
+    // Mientras se arrastra, el navegador no debe hacer scroll
+    document.addEventListener("touchmove", e => {
+        if (dragging && e.cancelable) e.preventDefault();
+    }, { passive: false });
+
+    /* ---------- 1) Mover fichas dentro del campo / quitarlas ---------- */
+    let tk = null;
+
+    tokens.addEventListener("pointerdown", e => {
+        if (currentTool === 'draw') return;
+        const el = e.target.closest(".field-token");
+        if (!el) return;
+        e.preventDefault();
+        el.setPointerCapture(e.pointerId);
+        el.classList.add("dragging");
+        tk = { el, pid: +el.dataset.pid, id: e.pointerId, pos: null, over: false };
+        dragging = true;
+    });
+
+    tokens.addEventListener("pointermove", e => {
+        if (!tk || e.pointerId !== tk.id) return;
+        const p = pctPos(e.clientX, e.clientY);
+        tk.el.style.left = p.x + "%";     // se mueve el propio elemento: sin re-render, sin tirones
+        tk.el.style.top = p.y + "%";
+        tk.pos = p;
+        tk.over = inside(bench, e.clientX, e.clientY, 14);
+        bench.classList.toggle("over", tk.over);
+    });
+
+    const endToken = (e, cancel) => {
+        if (!tk || e.pointerId !== tk.id) return;
+        const t = tk;
+        tk = null;
+        dragging = false;
+        bench.classList.remove("over");
+        t.el.classList.remove("dragging");
+        if (!cancel && t.over) {
+            state.fieldTokens = state.fieldTokens.filter(x => x.id !== t.pid);
+        } else if (t.pos) {
+            const ex = state.fieldTokens.find(x => x.id === t.pid);
+            if (ex) { ex.x = t.pos.x; ex.y = t.pos.y; }
+        }
+        persist();
+        renderFieldTokens();
+    };
+    tokens.addEventListener("pointerup", e => endToken(e, false));
+    tokens.addEventListener("pointercancel", e => endToken(e, true));
+
+    /* ---------- 2) Arrastrar jugadores de la lista al campo ---------- */
+    // Ratón: arrastre inmediato. Táctil: mantener pulsado ~0,2 s (así no se pierde el scroll de la lista).
+    let ls = null, ghost = null, raf = 0;
+    const TOUCH_DY = 56;   // en táctil la ficha se muestra por encima del dedo para verla
+
+    const ghostPt = () => ({ x: ls.x, y: ls.y - (ls.touch ? TOUCH_DY : 0) });
+
+    function moveGhost() {
+        const g = ghostPt();
+        ghost.style.left = g.x + "px";
+        ghost.style.top = g.y + "px";
+        field.classList.toggle("drop-hover", inside(field, g.x, g.y));
+    }
+
+    function autoscroll() {
+        if (!ls || !ls.active) return;
+        const g = ghostPt(), edge = 70;
+        let dy = 0;
+        if (g.y < edge) dy = -Math.ceil((edge - g.y) / 6);
+        else if (g.y > innerHeight - edge) dy = Math.ceil((g.y - (innerHeight - edge)) / 6);
+        if (dy) { window.scrollBy(0, dy); moveGhost(); }
+        raf = requestAnimationFrame(autoscroll);
+    }
+
+    function beginList() {
+        if (!ls || ls.active) return;
+        ls.active = true;
+        try { ls.card.setPointerCapture(ls.id); } catch (_) {}
+        ls.card.classList.add("drag-source");
+        ghost = document.createElement("div");
+        ghost.className = "drag-ghost";
+        ghost.textContent = ls.card.querySelector(".player-number-input").value;
+        document.body.appendChild(ghost);
+        dragging = true;
+        if (navigator.vibrate) navigator.vibrate(12);
+        moveGhost();
+        autoscroll();
+    }
+
+    list.addEventListener("pointerdown", e => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        const card = e.target.closest(".player-card");
+        if (!card || e.target.closest("input, select")) return;   // dorsal, nombre y posición son editables
+        ls = {
+            card, pid: +card.dataset.playerId, id: e.pointerId,
+            touch: e.pointerType !== "mouse",
+            x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY,
+            grip: !!e.target.closest(".player-grip"),
+            active: false, timer: 0
+        };
+        if (ls.touch && !ls.grip) ls.timer = setTimeout(beginList, 220);
+    });
+
+    list.addEventListener("pointermove", e => {
+        if (!ls || e.pointerId !== ls.id) return;
+        ls.x = e.clientX; ls.y = e.clientY;
+        if (!ls.active) {
+            const d = Math.hypot(ls.x - ls.sx, ls.y - ls.sy);
+            if (ls.touch && !ls.grip) { if (d > 10) clearTimeout(ls.timer); }   // el usuario está haciendo scroll
+            else if (d > 5) beginList();
+        }
+        if (ls.active) moveGhost();
+    });
+
+    const endList = (e, cancel) => {
+        if (!ls || e.pointerId !== ls.id) return;
+        clearTimeout(ls.timer);
+        cancelAnimationFrame(raf);
+        const s = ls;
+        ls = null;
+        dragging = false;
+        field.classList.remove("drop-hover");
+        if (!s.active) return;               // fue un simple toque: lo gestiona "click"
+        s.card.classList.remove("drag-source");
+        if (ghost) { ghost.remove(); ghost = null; }
+        suppressClickUntil = Date.now() + 400;
+        if (cancel) return;
+        const g = { x: s.x, y: s.y - (s.touch ? TOUCH_DY : 0) };
+        if (inside(field, g.x, g.y)) {
+            const p = pctPos(g.x, g.y);
+            addOrMoveToken(s.pid, p.x, p.y);
+        }
+    };
+    list.addEventListener("pointerup", e => endList(e, false));
+    list.addEventListener("pointercancel", e => endList(e, true));
+
+    // Evita el menú contextual / selección de texto al mantener pulsado
+    list.addEventListener("contextmenu", e => {
+        if (e.target.closest(".player-card") && !e.target.closest("input, select")) e.preventDefault();
+    });
+
+    // Toque simple: añade el jugador al centro del campo
+    list.addEventListener("click", e => {
+        if (Date.now() < suppressClickUntil) return;
+        if (e.target.closest("input, select")) return;
+        const card = e.target.closest(".player-card");
+        if (!card) return;
+        const pid = +card.dataset.playerId;
+        if (!state.fieldTokens.some(t => t.id === pid)) addOrMoveToken(pid, 50, 50);
+    });
+}
+
+/* ------------------------------------------------------------------
+   Dibujo en la pizarra (Pointer Events, trazos persistentes)
+------------------------------------------------------------------- */
+function canvasPoint(e) {
+    const r = canvas.getBoundingClientRect();
+    return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
+}
+
+function drawSegment(a, b, color) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.beginPath();
+    ctx.moveTo(a[0] * w, a[1] * h);
+    ctx.lineTo(b[0] * w, b[1] * h);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.stroke();
+}
+
+function redrawCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    strokes.forEach(s => {
+        if (s.pts.length === 1) drawSegment(s.pts[0], [s.pts[0][0] + 0.0005, s.pts[0][1]], s.color);
+        for (let i = 1; i < s.pts.length; i++) drawSegment(s.pts[i - 1], s.pts[i], s.color);
+    });
+}
+
+function resizeCanvas() {
+    if (!canvas) return;
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) return;     // pestaña oculta
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+    }
+    redrawCanvas();   // al redimensionar (p. ej. barra del navegador en móvil) NO se pierde el dibujo
+}
+
+function initCanvas() {
+    canvas = $("boardCanvas");
+    ctx = canvas.getContext("2d");
+    resizeCanvas();
+
+    canvas.addEventListener("pointerdown", e => {
+        if (currentTool !== 'draw') return;
+        e.preventDefault();
+        canvas.setPointerCapture(e.pointerId);
+        const p = canvasPoint(e);
+        currentStroke = { color: $("drawColor").value, pts: [p] };
+        strokes.push(currentStroke);
+        drawSegment(p, [p[0] + 0.0005, p[1]], currentStroke.color);
+        dragging = true;
+    });
+
+    canvas.addEventListener("pointermove", e => {
+        if (!currentStroke) return;
+        const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+        (evs.length ? evs : [e]).forEach(ev => {
+            const p = canvasPoint(ev);
+            const last = currentStroke.pts[currentStroke.pts.length - 1];
+            currentStroke.pts.push(p);
+            drawSegment(last, p, currentStroke.color);
+        });
+    });
+
+    const endStroke = () => { currentStroke = null; dragging = false; };
+    canvas.addEventListener("pointerup", endStroke);
+    canvas.addEventListener("pointercancel", endStroke);
+}
+
+function clearCanvas() {
+    strokes.length = 0;
+    redrawCanvas();
+}
+
+
+function initSelects() {
+    $("fRound").innerHTML = "";
+    $("roundFilter").innerHTML = '<option value="">Todas</option>';
+    for (let i = 1; i <= 26; i++) {
+        $("fRound").insertAdjacentHTML("beforeend", `<option value="${i}">Jornada ${i}</option>`);
+        $("roundFilter").insertAdjacentHTML("beforeend", `<option value="${i}">J${i}</option>`);
+    }
+}
+
+function loadForm(round) {
+    let m = state.matches.find(x => x.round === round) || {};
+    $("fRound").value = round;
+    $("fDate").value = m.date || "";
+    $("fOpponent").value = m.opponent || "";
+    $("fVenue").value = m.venue || "Local";
+    $("fGF").value = played(m) ? m.gf : "";
+    $("fGA").value = played(m) ? m.ga : "";
+    $("fLossGoals").value = m.lossGoals ?? "";
+    $("fChances").value = m.chances ?? "";
+    ["Physical", "Defense", "Build", "Effort"].forEach(k => $("f" + k).value = m[k.toLowerCase()] || "");
+    $("fNotes").value = m.notes || "";
+    renderMatchScorers(m.scorers || []);
+}
+
+function saveForm() {
+    let r = +$("fRound").value;
+    let m = state.matches.find(x => x.round === r);
+    let gf = $("fGF").value;
+    let ga = $("fGA").value;
+
+    let scorers = [];
+    document.querySelectorAll(".scorer-row").forEach(row => {
+        let playerId = +row.querySelector(".scorer-player").value;
+        let goals = +row.querySelector(".scorer-goals").value;
+        if (playerId && goals > 0) {
+            scorers.push({ playerId, goals });
+        }
+    });
+
+    Object.assign(m, {
+        date: $("fDate").value,
+        opponent: $("fOpponent").value.trim(),
+        venue: $("fVenue").value,
+        gf: gf === "" ? null : +gf,
+        ga: ga === "" ? null : +ga,
+        scorers: scorers,
+        lossGoals: $("fLossGoals").value === "" ? null : +$("fLossGoals").value,
+        chances: $("fChances").value === "" ? null : +$("fChances").value,
+        physical: $("fPhysical").value,
+        defense: $("fDefense").value,
+        build: $("fBuild").value,
+        effort: $("fEffort").value,
+        notes: $("fNotes").value
+    });
+
+    persist();
+    renderAll();
+    $("saveMsg").textContent = "¡Guardado!";
+    setTimeout(() => $("saveMsg").textContent = "", 2000);
+}
+
+function renderAnalysis() {
+    let t = totals();
+    let playedCount = t.ms.length;
+    let rows = [
+        ["Partidos Jugados", playedCount],
+        ["Balance (V / E / D)", `${t.w} / ${t.d} / ${t.l}`],
+        ["Puntos", t.points],
+        ["Goles Favor", t.gf],
+        ["Goles Contra", t.ga],
+        ["Promedio GF / P", playedCount ? (t.gf / playedCount).toFixed(2) : "—"],
+        ["Promedio GC / P", playedCount ? (t.ga / playedCount).toFixed(2) : "—"]
+    ];
+
+    $("analysisTable").innerHTML = rows.map(r => `<tr><th>${esc(r[0])}</th><td><strong>${esc(r[1])}</strong></td></tr>`).join("");
+    $("improvement").value = state.improvement || "";
+}
+
+function renderTeams() {
+    $("teamGrid").innerHTML = teams.map(t => {
+        let d = state.teams[t] || {};
+        return `
+            <div class="team">
+                <strong>${esc(t)}</strong>
+                <div class="field" style="margin-top:3px">
+                    <label>Notas</label>
+                    <input class="teamnote" data-team="${esc(t)}" value="${esc(d.note || "")}" placeholder="Detalles...">
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    document.querySelectorAll(".teamnote").forEach(el => {
+        el.onchange = () => {
+            let t = el.dataset.team;
+            state.teams[t] = state.teams[t] || {};
+            state.teams[t].note = el.value;
+            persist();
+        };
+    });
+}
+
+function renderAll() {
+    renderDashboard();
+    renderCalendar();
+    renderPlayers();
+    renderAnalysis();
+    renderTeams();
+    renderLeague();
+}
+
+document.querySelectorAll(".tab").forEach(b => {
+    b.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x === b));
+        document.querySelectorAll(".panel").forEach(x => x.classList.toggle("active", x.id === b.dataset.tab));
+        if (b.dataset.tab === "dashboard") renderDashboard();
+        if (b.dataset.tab === "squad") resizeCanvas();
+        if (b.dataset.tab === "league") renderLeague();
+    });
+});
+
+$("fRound").onchange = () => loadForm(+$("fRound").value);
+$("saveMatch").onclick = saveForm;
+$("clearForm").onclick = () => loadForm(+$("fRound").value);
+$("roundFilter").onchange = renderCalendar;
+$("statusFilter").onchange = renderCalendar;
+
+$("targetPoints").onchange = () => {
+    state.targetPoints = Math.max(0, +$("targetPoints").value || 0);
+    persist();
+    renderDashboard();
+};
+
+$("saveGoals").onclick = () => {
+    state.improvement = $("improvement").value;
+    persist();
+    $("goalMsg").textContent = "Guardado.";
+    setTimeout(() => $("goalMsg").textContent = "", 2000);
+};
+
+$("exportJson").onclick = () => download("madrid-rio-b-datos.json", JSON.stringify(state, null, 2), "application/json");
+$("exportCsv").onclick = () => {
+    let rows = [["Jornada", "Fecha", "Condicion", "Rival", "GF", "GA", "Puntos", "Notas"],
+    ...state.matches.map(m => [m.round, m.date, m.venue, m.opponent, m.gf ?? "", m.ga ?? "", played(m) ? pts(m) : "", m.notes])];
+    download("madrid-rio-b-partidos.csv", rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\n"), "text/csv;charset=utf-8");
+};
+
+function download(name, data, type) {
+    let a = document.createElement("a"), url = URL.createObjectURL(new Blob(["\ufeff", data], { type }));
+    a.href = url; a.download = name; a.click(); URL.revokeObjectURL(url);
+}
+
+$("importFile").onchange = async e => {
+    let f = e.target.files[0];
+    if (!f) return;
+    try {
+        let d = JSON.parse(await f.text());
+        state = { ...state, ...d };
+        syncSchedule();
+        persist();
+        renderAll();
+        if (state.logo) renderLogo(state.logo);
+        alert("Importado con éxito.");
+    } catch (err) { alert("Archivo no válido."); }
+    e.target.value = "";
+};
+
+$("resetData").onclick = () => {
+    if (confirm(SYNC.meta.code ? "¿Restablecer datos? Como este dispositivo está conectado, también se restablecerán en el resto de dispositivos del equipo." : "¿Restablecer datos?")) {
+        state = { 
+            logo: "", 
+            matches: initDefaultMatches(), 
+            teams: {}, 
+            players: Array.from({length: 16}, (_, i) => ({ id: i+1, number: i+1, name: `Jugador ${i+1}`, position: i===0?'Portero':(i<4?'Defensa':(i<10?'Centrocampista':'Delantero')) })),
+            fieldTokens: [{ id: 1, x: 50, y: 85 }, { id: 2, x: 25, y: 65 }, { id: 3, x: 50, y: 65 }, { id: 4, x: 75, y: 65 }, { id: 5, x: 30, y: 40 }, { id: 6, x: 70, y: 40 }, { id: 7, x: 50, y: 20 }],
+            improvement: "", 
+            targetPoints: 24 
+        };
+        persist();
+        renderLogo("");
+        renderAll();
+        loadForm(1);
+    }
+};
+
+window.addEventListener("resize", () => {
+    if ($("dashboard").classList.contains("active")) renderDashboard();
+    resizeCanvas();
+});
+
+initSelects();
+load();
+renderAll();
+initCanvas();
+initTactics();
+initLeague();
+loadForm(1);
+initSync();
+</script>
+</body>
+</html>
